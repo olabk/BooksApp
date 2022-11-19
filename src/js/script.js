@@ -16,9 +16,7 @@ const favoriteBooks = [];
 const filters=[];
 
 function initActions(){
-  const adults = dataSource.books.filter(function(book) { return book.details.adults; });
-  const nonFiction = dataSource.books.filter(function(book) { return book.details.nonFiction; });
-
+  
   bookList.addEventListener('dblclick', function(event) {
     const bookImage = event.target.closest('.book__image');
 
@@ -56,7 +54,30 @@ function initActions(){
       const filter = selected.getAttribute('value');
       filters.push(filter);
     }
+
+    filterBooks();
   });
+}
+
+function filterBooks(){
+  for (const book of dataSource.books) {
+    let isHidden = false;
+
+    for (const filter of filters) {
+      if (!book.details[filter]){
+        isHidden = true;
+      }
+    }
+
+    const bookImage = bookList.querySelector('[data-id="' + book.id + '"]');
+    const classList = bookImage.classList;
+
+    if(isHidden) {
+      classList.add('hidden');
+    } else {
+      classList.remove('hidden');
+    }
+  }
 }
 
 initActions();
