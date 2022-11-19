@@ -5,6 +5,8 @@ const formFilters = document.querySelector('.filters');
 
 function render(){
   for (const book of dataSource.books) {
+    book.ratingBgc = determineRatingBgc(book.rating);
+    book.ratingWidth = 10 * book.rating;
     const generatedHTML = bookTemplate(book);
     const element = utils.createDOMFromHTML(generatedHTML);
     bookList.appendChild(element);
@@ -69,7 +71,7 @@ function filterBooks(){
       }
     }
 
-    const bookImage = bookList.querySelector('[data-id="' + book.id + '"]');
+    const bookImage = bookList.querySelector(`[data-id="${book.id}"]`);
     const classList = bookImage.classList;
 
     if(isHidden) {
@@ -79,5 +81,20 @@ function filterBooks(){
     }
   }
 }
+
+function determineRatingBgc(rating){
+  if (rating <6 ){
+    return 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%);';
+  } 
+  if (rating <= 8)  {
+    return 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%);';
+  } 
+  if (rating <= 9) {
+    return 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+  }
+  return 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%);';
+}
+
+
 
 initActions();
