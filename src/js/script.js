@@ -1,6 +1,7 @@
 const bookList = document.querySelector('.books-list');
 const bookTemplateScript = document.querySelector('#template-book');
 const bookTemplate = Handlebars.compile(bookTemplateScript.innerHTML);
+const formFilters = document.querySelector('.filters');
 
 function render(){
   for (const book of dataSource.books) {
@@ -12,8 +13,12 @@ function render(){
 render();
 
 const favoriteBooks = [];
+const filters=[];
 
 function initActions(){
+  const adults = dataSource.books.filter(function(book) { return book.details.adults; });
+  const nonFiction = dataSource.books.filter(function(book) { return book.details.nonFiction; });
+
   bookList.addEventListener('dblclick', function(event) {
     const bookImage = event.target.closest('.book__image');
 
@@ -37,5 +42,21 @@ function initActions(){
       classList.add('favorite');
     }
   });
+
+  formFilters.addEventListener('click', function(event) {
+    if (event.target.name !== 'filter'){
+      return;
+    }
+  
+    // clear filters array
+    filters.splice(0, filters.length);
+
+    const checked = formFilters.querySelectorAll('input:checked');
+    for (const selected of checked){
+      const filter = selected.getAttribute('value');
+      filters.push(filter);
+    }
+  });
 }
+
 initActions();
